@@ -1,9 +1,10 @@
 # Default template for XBee MicroPython projects
 
 # Default template for XBee MicroPython projects
+import urequests as requests
+
 import ujson
-import urllib
-import urequests
+
 import uftp
 import sys
 from datetime import datetime
@@ -24,7 +25,7 @@ options["end_hour_utc"] = "23"
 options["parameters"] = "o3,pm25"
 options["bbox"] = "32.37,-104.261,32.39,-104.263" # minX,minY,maxX,maxY
 options["data_type"] = "a"
-options["format"] = "application/xml"
+options["format"] = "application/csv"
 options["ext"] = "xml"
 options["api_key"] = "C8A2A7B9-E1A6-4D9E-B89C-88CF3E47B877"
 
@@ -43,15 +44,15 @@ try:
     # Request AirNowAPI data
     # User's home directory.
     # Perform the AirNow API data request
-    api_data = urllib.URLopener()
-    # api_data.(REQUEST_URL)
-
+    api_data = requests.get(REQUEST_URL)
+    data = api_data.getcode()
+    print(api_data.content)
+    print(api_data.text)
+    # You can access .content multiple times of course
+    print(api_data.content)
+    print(api_data.json())
     # Download complete
-    """ print
-    "Download URL: %s" % REQUEST_URL
-    print
-    "Download File: %s" % download_file
-    """
+
 except Exception as e:
     print("Unable perform AirNowAPI request. %s" % e)
     sys.exit(1)
